@@ -29,3 +29,13 @@ class Controller:
 
     # Altre Funzioni Event Handler
     # TODO
+    def mostra(self,e):
+        lista_automobili = self._model.get_automobili()
+        print(lista_automobili)
+        return lista_automobili
+
+    def cerca(self,e):
+        lista_automobili_modello = self._model.cerca_automobili_per_modello
+        print(lista_automobili_modello)
+        return lista_automobili_modello
+
