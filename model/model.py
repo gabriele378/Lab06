@@ -38,13 +38,20 @@ class Autonoleggio:
 
         # TODO
         cnx = get_connection()
-        cursor = cnx.cursor()
-        query = """SELECT * FROM automobile"""
-        cursor.execute(query)
-        result= []
-        for row in cursor:
-            result.append(row)
-        return result
+        result = []
+        if cnx is not None:
+            cursor = cnx.cursor(dictionaries=True)
+            query = """SELECT * FROM automobile"""
+            cursor.execute(query)
+            for row in cursor:
+                result.append(Automobile(row["codice"], row["marca"], row["modello"], row["anno"], row["posti"], row["disponibile"]))
+
+            cursor.close()
+            cnx.close()
+            return result
+        else:
+            print("Impossibile connettersi")
+            return None
 
     def cerca_automobili_per_modello(self, modello) -> list[Automobile] | None:
         """
@@ -54,14 +61,22 @@ class Autonoleggio:
         """
         # TODO
         cnx = get_connection()
-        cursor = cnx.cursor()
-        query = """SELECT * FROM automobile
-                    WHERE modello = '{modello}'"""
-        cursor.execute(query)
         result = []
-        for row in cursor:
-            result.append(row)
-        return result
+        query = """SELECT * FROM automobile
+                    WHERE automobile.modello = %s"""
+        if cnx is not None:
+            cursor = cnx.cursor(dictionaries=True)
+            cursor.execute(query, (modello,))
+            for row in cursor:
+                result.append(Automobile(row["codice"], row["marca"], row["modello"],row["anno"], row["posti"], row["disponibile"]))
+
+            cursor.close()
+            cnx.close()
+            return result
+        else:
+            print("Impossibile connettersi")
+            return None
+
 
 
 

@@ -31,11 +31,22 @@ class Controller:
     # TODO
     def mostra(self,e):
         lista_automobili = self._model.get_automobili()
-        print(lista_automobili)
-        return lista_automobili
+        if len(lista_automobili)>0:
+            self._view.mostra_auto(lista_automobili)
+        else:
+            self._view.show_alert("Nessuna automobile trovata nel database")
 
     def cerca(self,e):
-        lista_automobili_modello = self._model.cerca_automobili_per_modello
-        print(lista_automobili_modello)
-        return lista_automobili_modello
+        modello = self._view.input_modello_auto
+        if not modello:
+            self._view.show_alert("Inserisci un modello valido")
+
+        else:
+            lista_automobili_modello = self._model.cerca_automobili_per_modello(modello)
+            if len(lista_automobili_modello)>0:
+                self._view.mostra_risultati_ricerca(lista_automobili_modello)
+            else:
+                self._view.show_alert("Inserisci un modello valido")
+
+
 

@@ -88,7 +88,8 @@ class View:
 
             # Sezione 3
             # TODO
-            ft.Row([ft.Text("Automobili", size=20),bottone_mostra]),
+            ft.Row([ft.Text("Automobili", size=20),bottone_mostra,
+                    self.lista_auto]),
 
 
 
@@ -97,10 +98,27 @@ class View:
             # TODO
 
             ft.Text("Cerca Automobile", size = 20, text_align= ft.TextAlign.CENTER),
-            ft.Row([ft.TextField(value="Modello", text_size= 15), bottone_cerca])
+            ft.Row([self.input_modello_auto, bottone_cerca, self.lista_auto_ricerca])
         )
 
     def cambia_tema(self, e):
         self.page.theme_mode = ft.ThemeMode.DARK if self.toggle_cambia_tema.value else ft.ThemeMode.LIGHT
         self.toggle_cambia_tema.label = "Tema scuro" if self.toggle_cambia_tema.value else "Tema chiaro"
+        self.page.update()
+
+    def mostra_auto(self, automobili):
+        """mostra tutte le auto nella Listview principale"""
+        self.lista_auto.controls.clear()
+        for a in automobili:
+            self.lista_auto.controls.append(
+                ft.Text(f"{a.codice} {a.marca} {a.modello} {a.anno} {a.posti} {a.disponibile}")
+            )
+        self.page.update()
+
+    def mostra_risultati_ricerca(self, automobili):
+        self.lista_auto_ricerca.controls.clear()
+        for a in automobili:
+            self.lista_auto_ricerca.controls.append(
+                ft.Text(f"{a.codice} {a.marca} {a.modello} {a.anno} {a.posti} {a.disponibile}")
+            )
         self.page.update()
